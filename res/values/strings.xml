@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">Promos</string>
+    <string name="desc"></string>
+    <string name="test">Test</string>
+    
+    <string name="txt_some_title">Hotel Havana</string>
+    <string name="txt_some_longtext">Manny, Diego, and Sid embark upon another adventure after their continent is set adrift. Using an iceberg as a ship, they encounter sea creatures and battle pirates as they explore a new world.</string>
+    <string name="txt_some_price">$60</string>
+    
+    <!-- Menu -->
+    <string name="perfil">Mi perfil</string>
+    <string name="promociones">Promociones</string>
+    <string name="actividad_reciente">Actividad reciente</string>
+    <string name="ayuda">Ayuda</string>
+    
+</resources>
