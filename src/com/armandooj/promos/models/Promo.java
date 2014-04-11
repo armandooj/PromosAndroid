@@ -1,6 +1,6 @@
 package com.armandooj.promos.models;
 
-public class VideoItem {
+public class Promo {
 	private int _id;
 	private int _price;
 	private String _title;
@@ -8,10 +8,10 @@ public class VideoItem {
 	private String _desc;
 	private Boolean _selected;
 
-	public VideoItem() {
+	public Promo() {
 	};
 
-	public VideoItem(int id, int price, String title, String image, String desc,Boolean selected) {
+	public Promo(int id, int price, String title, String image, String desc,Boolean selected) {
 		this._id = id;
 		this._price = price;
 		this._title = title;

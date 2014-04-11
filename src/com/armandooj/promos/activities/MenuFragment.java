@@ -63,9 +63,9 @@ public class MenuFragment extends Fragment implements OnItemClickListener {
 		addMenuItem(R.string.perfil, R.drawable.ico_person,
 				Test.class, args);
 		addMenuItem(R.string.promociones, R.drawable.ico_star,
-				MasterDetailActivity.class, args);
+				PromotionsActivity.class, args);
 		addMenuItem(R.string.actividad_reciente, R.drawable.ico_comment,
-				Test.class, args);
+				SwipeActivity.class, args);
 		addMenuItem(R.string.ayuda, R.drawable.ic_action_about,
 				Test.class, args);
 
@@ -90,13 +90,11 @@ public class MenuFragment extends Fragment implements OnItemClickListener {
 
 			if (newContent == null) {
 
-				newContent = Fragment.instantiate(getActivity(), itm
-						.get_class().getName(), itm.get_args());
+				newContent = Fragment.instantiate(getActivity(), itm.get_class().getName(), itm.get_args());
 				itm.set_fragment(newContent);
 			}
 
 			switchFragment(newContent);
-
 		}
 	}
 

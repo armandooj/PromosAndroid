@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class VideoList {
 
-	public static ArrayList<VideoItem> getVideoList() {
-		ArrayList<VideoItem> resultList = new ArrayList<VideoItem>();
+	public static ArrayList<Promo> getVideoList() {
+		ArrayList<Promo> resultList = new ArrayList<Promo>();
 
-		VideoItem itm;
+		Promo itm;
 
-		itm = new VideoItem(
+		itm = new Promo(
 				1,
 				89,
 				"Brave",
@@ -18,7 +18,7 @@ public class VideoList {
 				true);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				2,
 				81,
 				"Ice Age",
@@ -27,7 +27,7 @@ public class VideoList {
 				false);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				3,
 				86,
 				"The Incredibles",
@@ -36,7 +36,7 @@ public class VideoList {
 				true);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				4,
 				85,
 				"Finding Nemo",
@@ -45,7 +45,7 @@ public class VideoList {
 				false);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				5,
 				87,
 				"UP",
@@ -54,7 +54,7 @@ public class VideoList {
 				false);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				6,
 				89,
 				"Brave",
@@ -63,7 +63,7 @@ public class VideoList {
 				false);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				7,
 				81,
 				"Ice Age",
@@ -72,7 +72,7 @@ public class VideoList {
 				false);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				8,
 				86,
 				"The Incredibles",
@@ -81,7 +81,7 @@ public class VideoList {
 				false);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				9,
 				85,
 				"Finding Nemo",
@@ -90,7 +90,7 @@ public class VideoList {
 				false);
 		resultList.add(itm);
 
-		itm = new VideoItem(
+		itm = new Promo(
 				10,
 				87,
 				"UP",

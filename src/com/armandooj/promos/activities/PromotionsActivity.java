@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.armandooj.promos.R;
-import com.armandooj.promos.adapters.MasterDetailAdapter;
-import com.armandooj.promos.models.VideoItem;
+import com.armandooj.promos.adapters.PromotionsAdapter;
+import com.armandooj.promos.models.Promo;
 import com.armandooj.promos.utils.Utils;
 
 import com.parse.FindCallback;
@@ -13,10 +13,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseException;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,10 +31,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class MasterDetailActivity extends Fragment implements OnItemClickListener, OnClickListener {
+public class PromotionsActivity extends Fragment implements OnItemClickListener, OnClickListener {
 
 	ListView listView;
-	ArrayList<VideoItem> lstVideos;
+	ArrayList<Promo> lstVideos;
 	View vw_master;
 	View vw_detail;
 
@@ -50,6 +50,19 @@ public class MasterDetailActivity extends Fragment implements OnItemClickListene
 	private Animation mSlideOutLeft;
 
 	boolean _isBack = true;
+	
+	private Callbacks callbacks = promotionsCallbacks;
+	private List<Promo> promos; 
+	
+	public interface Callbacks {
+		public void gotPromos(List<Promo> promos);
+	}
+
+	// if the fragment is no attached to an activity
+	private static Callbacks promotionsCallbacks = new Callbacks() {
+		@Override
+		public void gotPromos(List<Promo> promos) {};
+	};	
 
 	/*
 	 * (non-Javadoc)
@@ -59,8 +72,7 @@ public class MasterDetailActivity extends Fragment implements OnItemClickListene
 	 * android.view.ViewGroup, android.os.Bundle)
 	 */
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		if (container == null) {
 			// We have different layouts, and in one of them this
@@ -72,8 +84,7 @@ public class MasterDetailActivity extends Fragment implements OnItemClickListene
 			// the view hierarchy; it would just never be used.
 			return null;
 		}
-		LinearLayout theLayout = (LinearLayout) inflater.inflate(
-				R.layout.activity_master_detail, container, false);
+		LinearLayout theLayout = (LinearLayout) inflater.inflate(R.layout.activity_master_detail, container, false);
 		// Register for the Button.OnClick event
 		// Button b = (Button) theLayout.findViewById(R.id.frag1_button);
 		// b.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +120,11 @@ public class MasterDetailActivity extends Fragment implements OnItemClickListene
 		this.vw_master.setVisibility(View.VISIBLE);
 		this.vw_detail.setVisibility(View.GONE);
 		
-		getPromos();
+		if (promos == null) {
+			getPromos();
+		} else { 
+			listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
+		}
 		
 		listView.setOnItemClickListener(this);
 
@@ -123,21 +138,25 @@ public class MasterDetailActivity extends Fragment implements OnItemClickListene
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Promo");
 		query.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
+		    	
 		        if (e == null) {
-		        	ArrayList<VideoItem> resultList = new ArrayList<VideoItem>();
-
+		        	promos = new ArrayList<Promo>();
 		    		for (ParseObject parseObject : scoreList) {
-			    		VideoItem itm = new VideoItem(1, 89, parseObject.getString("title"),
-			    				"brave.jpg", parseObject.getString("description"), true);
-			    		resultList.add(itm);
-		    		}
-		    		
-		    		listView.setAdapter(new MasterDetailAdapter(getActivity(), resultList));		            
+			    		Promo itm = new Promo(1, 89, parseObject.getString("title"), "brave.jpg", parseObject.getString("description"), true);
+			    		promos.add(itm);
+		    		}		    				    		
+		    		listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
+		    		// Save the list in the Activity
+		    		callbacks.gotPromos(promos);
 		        } else {
-		            Log.d("score", "Error: " + e.getMessage());
+		        	// TODO try again?
 		        }
 		    }
 		});
+	}
+	
+	public void setPromos(List<Promo> promos) {
+		this.promos = promos;
 	}
 
 	private void initAnimation() {
@@ -152,21 +171,18 @@ public class MasterDetailActivity extends Fragment implements OnItemClickListene
 				R.anim.push_left_out);
 	}
 
-	public void onItemClick(AdapterView<?> adp, View listview, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> adp, View listview, int position, long id) {
 		this._isBack = false;
 		showView(this._isBack);
 
-		if (adp != null && adp.getAdapter() instanceof MasterDetailAdapter) {
-			MasterDetailAdapter newsAdp = (MasterDetailAdapter) adp
-					.getAdapter();
-			VideoItem itm = newsAdp.getItem(position);
+		if (adp != null && adp.getAdapter() instanceof PromotionsAdapter) {
+			PromotionsAdapter newsAdp = (PromotionsAdapter) adp.getAdapter();
+			Promo itm = newsAdp.getItem(position);
 
 			tvTitle.setText(itm.get_title());
 			tvPrice.setText("$" + itm.get_price());
 			tvDesc.setText(itm.get_desc());
-			Bitmap bmp = Utils.GetImageFromAssets(getActivity(), "images/"
-					+ itm.get_image());
+			Bitmap bmp = Utils.GetImageFromAssets(getActivity(), "images/" + itm.get_image());
 			img.setImageBitmap(bmp);
 		}
 	}
@@ -202,6 +218,26 @@ public class MasterDetailActivity extends Fragment implements OnItemClickListene
 	@Override
 	public void onClick(View v) {
 		onBackPressed();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		// Activities containing this fragment must implement its callbacks
+		if (!(activity instanceof Callbacks)) {
+			throw new IllegalStateException("Activity must implement fragment's callbacks.");
+		}
+
+		callbacks = (Callbacks) activity;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		
+		// reset the active callbacks interface
+		callbacks = promotionsCallbacks;
 	}
 
 }

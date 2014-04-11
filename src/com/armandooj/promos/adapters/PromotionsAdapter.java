@@ -3,7 +3,7 @@ package com.armandooj.promos.adapters;
 import java.util.List;
 
 import com.armandooj.promos.R;
-import com.armandooj.promos.models.VideoItem;
+import com.armandooj.promos.models.Promo;
 import com.armandooj.promos.utils.Utils;
 
 import android.app.Activity;
@@ -15,13 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MasterDetailAdapter extends ArrayAdapter<VideoItem> {
+public class PromotionsAdapter extends ArrayAdapter<Promo> {
 
-	private List<VideoItem> _list;
+	private List<Promo> _list;
 	private final Activity _context;
 	private static LayoutInflater _inflater = null;
 
-	public MasterDetailAdapter(Activity context, List<VideoItem> lst) {
+	public PromotionsAdapter(Activity context, List<Promo> lst) {
 		super(context, R.layout.row_masterdetail, lst);
 		this._context = context;
 		this._list = lst;
@@ -38,7 +38,7 @@ public class MasterDetailAdapter extends ArrayAdapter<VideoItem> {
 
 		Utils.setFontAllView(parent);
 
-		VideoItem vidItem = _list.get(position);
+		Promo vidItem = _list.get(position);
 		Integer id = vidItem.get_id();
 
 		view.setId(id);
