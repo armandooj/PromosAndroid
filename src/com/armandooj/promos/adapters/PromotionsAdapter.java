@@ -5,9 +5,9 @@ import java.util.List;
 import com.armandooj.promos.R;
 import com.armandooj.promos.models.Promo;
 import com.armandooj.promos.utils.Utils;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +38,8 @@ public class PromotionsAdapter extends ArrayAdapter<Promo> {
 
 		Utils.setFontAllView(parent);
 
-		Promo vidItem = _list.get(position);
-		Integer id = vidItem.get_id();
+		Promo promo = _list.get(position);
+		Integer id = promo.get_id();
 
 		view.setId(id);
 		TextView tvTitle = (TextView) view.findViewById(R.id.text_name);
@@ -48,13 +48,14 @@ public class PromotionsAdapter extends ArrayAdapter<Promo> {
 		ImageView iv = (ImageView) view.findViewById(R.id.image);
 
 		view.setId(id);
-		tvTitle.setText(vidItem.get_title());
-		tvPrice.setText("$" + vidItem.get_price());
-		tvDesc.setText(vidItem.get_desc());
+		tvTitle.setText(promo.get_title());
+		tvPrice.setText("$" + promo.get_price());
+		tvDesc.setText(promo.get_desc());
 
-		Bitmap bmp = Utils.GetImageFromAssets(this._context, "images/"
-				+ vidItem.get_image());
-		iv.setImageBitmap(bmp);
+		//Bitmap bmp = Utils.GetImageFromAssets(this._context, "images/"+ vidItem.get_image());
+		//iv.setImageBitmap(bmp);
+		
+		UrlImageViewHelper.setUrlDrawable(iv, promo.get_image());
 
 		return view;
 	}

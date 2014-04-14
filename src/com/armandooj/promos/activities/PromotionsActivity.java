@@ -8,13 +8,14 @@ import com.armandooj.promos.adapters.PromotionsAdapter;
 import com.armandooj.promos.models.Promo;
 import com.armandooj.promos.utils.Utils;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseException;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -53,6 +54,7 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 	
 	private Callbacks callbacks = promotionsCallbacks;
 	private List<Promo> promos; 
+	ProgressDialog progress;
 	
 	public interface Callbacks {
 		public void gotPromos(List<Promo> promos);
@@ -85,17 +87,6 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 			return null;
 		}
 		LinearLayout theLayout = (LinearLayout) inflater.inflate(R.layout.activity_master_detail, container, false);
-		// Register for the Button.OnClick event
-		// Button b = (Button) theLayout.findViewById(R.id.frag1_button);
-		// b.setOnClickListener(new View.OnClickListener() {
-
-		// @Override
-		// public void onClick(View v) {
-		// Toast.makeText(MasterDetailActivity.this.getActivity(),
-		// "OnClickMe button clicked", Toast.LENGTH_LONG).show();
-
-		// }
-		// });
 
 		this.vw_master = (View) theLayout.findViewById(R.id.master);
 		this.vw_detail = (View) theLayout.findViewById(R.id.detail);
@@ -122,6 +113,9 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 		
 		if (promos == null) {
 			getPromos();
+			progress = new ProgressDialog(getActivity());
+			progress.setMessage("Cargando...");
+			progress.show();
 		} else { 
 			listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
 		}
@@ -142,7 +136,8 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 		        if (e == null) {
 		        	promos = new ArrayList<Promo>();
 		    		for (ParseObject parseObject : scoreList) {
-			    		Promo itm = new Promo(1, 89, parseObject.getString("title"), "brave.jpg", parseObject.getString("description"), true);
+			    		Promo itm = new Promo(1, 89, parseObject.getString("title"), parseObject.getString("image_url"),
+			    				parseObject.getString("description"), true);
 			    		promos.add(itm);
 		    		}		    				    		
 		    		listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
@@ -151,6 +146,9 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 		        } else {
 		        	// TODO try again?
 		        }
+		        
+				// dismiss the dialog
+				progress.dismiss();
 		    }
 		});
 	}
@@ -182,8 +180,8 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 			tvTitle.setText(itm.get_title());
 			tvPrice.setText("$" + itm.get_price());
 			tvDesc.setText(itm.get_desc());
-			Bitmap bmp = Utils.GetImageFromAssets(getActivity(), "images/" + itm.get_image());
-			img.setImageBitmap(bmp);
+
+			UrlImageViewHelper.setUrlDrawable(img, itm.get_image());
 		}
 	}
 
