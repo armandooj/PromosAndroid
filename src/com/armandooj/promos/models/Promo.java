@@ -1,71 +1,23 @@
 package com.armandooj.promos.models;
 
 public class Promo {
-	private int _id;
-	private int _price;
-	private String _title;
-	private String _image;
-	private String _desc;
-	private Boolean _selected;
-
-	public Promo() {
-	};
-
-	public Promo(int id, int price, String title, String image, String desc,Boolean selected) {
-		this._id = id;
-		this._price = price;
-		this._title = title;
-		this._image = image;
-		this._desc = desc;
-		this._selected = selected;
-	};
-
-	public int get_id() {
-		return _id;
-	}
-
-	public int get_price() {
-		return _price;
-	}
-
-	public String get_title() {
-		return _title;
-	}
-
-	public String get_image() {
-		return _image;
-	}
-
-	public String get_desc() {
-		return _desc;
-	}
 	
-	public Boolean get_selected() {
-		return _selected;
-	}
+	public String objectId;	
+	public String title;
+	public String description;
+	public String price;
+	public String imageUrl;	
+	public int uses;
 
-	public void set_id(int _id) {
-		this._id = _id;
-	}
+	public Promo() {};
 
-	public void set_price(int _price) {
-		this._price = _price;
-	}
-
-	public void set_title(String _title) {
-		this._title = _title;
-	}
-
-	public void set_image(String _image) {
-		this._image = _image;
-	}
-
-	public void set_desc(String _desc) {
-		this._desc = _desc;
-	}
-	
-	public void set_selected(Boolean _selected) {
-		this._selected = _selected;
-	}
+	public Promo(String objectId, String title, String desc, String price, String imageUrl, int uses) {
+		this.objectId = objectId;
+		this.title = title;
+		this.description = desc;
+		this.price = price;		
+		this.imageUrl = imageUrl;
+		this.uses = uses;		
+	};
 
 }

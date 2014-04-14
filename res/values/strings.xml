@@ -15,4 +15,8 @@
     <string name="actividad_reciente">Actividad reciente</string>
     <string name="ayuda">Ayuda</string>
     
+    <!-- Promos -->
+    <string name="cargando">Cargando</string>
+    <string name="leer_mas">Leer más</string>
+    
 </resources>

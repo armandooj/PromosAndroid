@@ -101,9 +101,9 @@ public class SwipeActivity extends Fragment implements OnClickListener,
 		if (adp != null && adp.getAdapter() instanceof SwipeAdapter) {
 			SwipeAdapter swipeAdp = (SwipeAdapter) adp.getAdapter();
 			Promo itm = swipeAdp.getItem(position);
-			itm.set_selected(!itm.get_selected());
+			//itm.set_selected(!itm.get_selected());
 
-			Toast.makeText(getActivity(), itm.get_title() + " have been clicked", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), itm.title + " have been clicked", Toast.LENGTH_SHORT).show();
 		}
 	}
 

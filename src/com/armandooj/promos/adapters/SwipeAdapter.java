@@ -43,8 +43,8 @@ public class SwipeAdapter extends ArrayAdapter<Promo> {
 
 		Utils.setFontAllView(parent);
 
-		Promo vidItem = _list.get(position);
-		Integer id = vidItem.get_id();
+		Promo promo = _list.get(position);
+		//Integer id = vidItem.get_id();
 
 		View layer1 = view.findViewById(R.id.view_layer1);
 		View layer2 = view.findViewById(R.id.view_layer2);
@@ -53,12 +53,12 @@ public class SwipeAdapter extends ArrayAdapter<Promo> {
 		TextView tvDesc = (TextView) view.findViewById(R.id.text_desc);
 		ImageView iv = (ImageView) view.findViewById(R.id.image);
 
-		view.setId(id);
-		tvTitle.setText(vidItem.get_title());
-		tvDesc.setText(vidItem.get_desc());
+		//view.setId(id);
+		tvTitle.setText(promo.title);
+		tvDesc.setText(promo.description);
 
 		Bitmap bmp = Utils.GetImageFromAssets(this._context, "images/"
-				+ vidItem.get_image());
+				+ promo.imageUrl);
 		iv.setImageBitmap(bmp);
 
 		detailViewListener(position, view);

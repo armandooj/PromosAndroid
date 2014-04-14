@@ -28,13 +28,16 @@ public class MainActivity extends FragmentActivity implements OnClickListener, P
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
 		
-		ViewGroup vg = (ViewGroup)findViewById(R.id.main_root);
-		
-		// Initial Fragment	
-		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new PromotionsActivity()).commit();		
+		createInitialFragment();
 		
         // Initialize parse
-        Parse.initialize(this, "xOYGA3pD0VgpO47tbQ3no1r6IOAyuHF7D0UgDbz4", "s2Vw5tYZSDnKCtWoZV471cjthYCtusDKw9N00iUn");		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Parse.initialize(MainActivity.this, "xOYGA3pD0VgpO47tbQ3no1r6IOAyuHF7D0UgDbz4", "s2Vw5tYZSDnKCtWoZV471cjthYCtusDKw9N00iUn");		
+			}
+		}).start();        
 		
 		menu = new SlidingMenu(this);
 		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -53,7 +56,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener, P
 		btnList.setOnClickListener(this);
 		btnCompose.setOnClickListener(this);
 				
+		ViewGroup vg = (ViewGroup)findViewById(R.id.main_root);
 		Utils.setFontAllView(vg);
+	}
+	
+	public void createInitialFragment() {			
+		PromotionsActivity promotionsActivity = new PromotionsActivity();
+		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, promotionsActivity).commit();		
 	}
 	
 	@Override

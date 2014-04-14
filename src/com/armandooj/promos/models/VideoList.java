@@ -8,7 +8,7 @@ public class VideoList {
 		ArrayList<Promo> resultList = new ArrayList<Promo>();
 
 		Promo itm;
-
+/*
 		itm = new Promo(
 				1,
 				89,
@@ -98,6 +98,7 @@ public class VideoList {
 				"By tying thousands of balloons to his home, 78-year-old Carl sets out to fulfill his lifelong dream to see the wilds of South America. Russell, a wilderness explorer 70 years younger, inadvertently becomes a stowaway.",
 				false);
 		resultList.add(itm);
+		*/
 
 		return resultList;
 	};

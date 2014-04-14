@@ -1,5 +1,6 @@
 package com.armandooj.promos.activities;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import com.armandooj.promos.adapters.PromotionsAdapter;
 import com.armandooj.promos.models.Promo;
 import com.armandooj.promos.utils.Utils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
@@ -16,7 +19,9 @@ import com.parse.ParseException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,14 +116,19 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 		this.vw_master.setVisibility(View.VISIBLE);
 		this.vw_detail.setVisibility(View.GONE);
 		
-		if (promos == null) {
-			getPromos();
-			progress = new ProgressDialog(getActivity());
-			progress.setMessage("Cargando...");
-			progress.show();
-		} else { 
-			listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
-		}
+		// if we find a cached list, use it
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		if (preferences.contains("promos")) {
+			String promosJson = preferences.getString("promos", null);
+			if (promos != null) {
+				Type listType = new TypeToken<List<Promo>>(){}.getType();
+				promos = new Gson().fromJson(promosJson, listType);
+				listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
+			}
+		}	
+		
+		// anyway, request the promos again
+		getPromos();
 		
 		listView.setOnItemClickListener(this);
 
@@ -130,29 +140,47 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 	
 	public void getPromos() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Promo");
+		// find the most used first!
+		query.orderByDescending("uses");
 		query.findInBackground(new FindCallback<ParseObject>() {
-		    public void done(List<ParseObject> scoreList, ParseException e) {
-		    	
+		    
+			public void done(List<ParseObject> scoreList, ParseException e) {		    	
 		        if (e == null) {
 		        	promos = new ArrayList<Promo>();
 		    		for (ParseObject parseObject : scoreList) {
-			    		Promo itm = new Promo(1, 89, parseObject.getString("title"), parseObject.getString("image_url"),
-			    				parseObject.getString("description"), true);
-			    		promos.add(itm);
-		    		}		    				    		
-		    		listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
+		    			Promo promo = new Promo(
+		    					parseObject.getString("objectId"), 
+		    					parseObject.getString("title"), 
+		    					parseObject.getString("description"), 
+		    					parseObject.getString("price"), 
+		    					parseObject.getString("image_url"), 
+		    					parseObject.getInt("uses")
+		    			);
+			    		promos.add(promo);
+		    		}		    		
+		    				    		
+		    		if (listView.getAdapter() == null) {
+		    			listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
+		    		} else {
+		    			((PromotionsAdapter) listView.getAdapter()).notifyDataSetChanged();
+		    		}
 		    		// Save the list in the Activity
 		    		callbacks.gotPromos(promos);
-		        } else {
-		        	// TODO try again?
+		    		// cache the list
+		    		savePromos();
 		        }
-		        
-				// dismiss the dialog
-				progress.dismiss();
 		    }
 		});
 	}
 	
+	public void savePromos() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = preferences.edit();
+        Type listType = new TypeToken<List<Promo>>(){}.getType();
+        editor.putString("promos", new Gson().toJson(promos, listType));
+        editor.commit();
+	}
+
 	public void setPromos(List<Promo> promos) {
 		this.promos = promos;
 	}
@@ -175,13 +203,13 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 
 		if (adp != null && adp.getAdapter() instanceof PromotionsAdapter) {
 			PromotionsAdapter newsAdp = (PromotionsAdapter) adp.getAdapter();
-			Promo itm = newsAdp.getItem(position);
+			Promo promo = newsAdp.getItem(position);
 
-			tvTitle.setText(itm.get_title());
-			tvPrice.setText("$" + itm.get_price());
-			tvDesc.setText(itm.get_desc());
+			tvTitle.setText(promo.title);
+			tvPrice.setText(promo.price);
+			tvDesc.setText(promo.description);
 
-			UrlImageViewHelper.setUrlDrawable(img, itm.get_image());
+			UrlImageViewHelper.setUrlDrawable(img, promo.imageUrl);
 		}
 	}
 
