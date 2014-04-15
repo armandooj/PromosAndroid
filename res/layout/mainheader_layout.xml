@@ -51,12 +51,12 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/btn_compose"
+            android:id="@+id/btn_favorite"
             android:layout_width="@dimen/width"
             android:layout_height="fill_parent"
             android:background="@drawable/ui_button_green"
 			android:contentDescription="@string/desc"
-            android:src="@drawable/ico_compose" />
+            android:src="@drawable/ico_heart" />
     </LinearLayout>
 
 </RelativeLayout>

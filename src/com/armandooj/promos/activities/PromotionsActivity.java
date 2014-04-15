@@ -47,7 +47,7 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 	// detail view
 	TextView tvTitle, tvPrice, tvDesc;
 	ImageView img;
-	ImageButton btnBack, btnLike, btnLove;
+	ImageButton btnBack, btnLike, btnFavorite;
 
 	// animation
 	private Animation mSlideInLeft;
@@ -80,7 +80,8 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+		super.onCreateView(inflater, container, savedInstanceState); // TODO test
+		
 		if (container == null) {
 			// We have different layouts, and in one of them this
 			// fragment's containing frame doesn't exist. The fragment
@@ -107,11 +108,11 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 
 		btnBack = (ImageButton) this.vw_detail.findViewById(R.id.btn_back);
 		btnLike = (ImageButton) this.vw_detail.findViewById(R.id.btn_like);
-		btnLove = (ImageButton) this.vw_detail.findViewById(R.id.btn_love);
+		btnFavorite = (ImageButton) this.vw_detail.findViewById(R.id.btn_love);
 
 		btnBack.setOnClickListener(this);
 		btnLike.setOnClickListener(this);
-		btnLove.setOnClickListener(this);
+		btnFavorite.setOnClickListener(btnFavoriteListener);
 
 		this.vw_master.setVisibility(View.VISIBLE);
 		this.vw_detail.setVisibility(View.GONE);
@@ -120,12 +121,10 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if (preferences.contains("promos")) {
 			String promosJson = preferences.getString("promos", null);
-			if (promos != null) {
-				Type listType = new TypeToken<List<Promo>>(){}.getType();
-				promos = new Gson().fromJson(promosJson, listType);
-				listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
-			}
-		}	
+			Type listType = new TypeToken<List<Promo>>(){}.getType();
+			promos = new Gson().fromJson(promosJson, listType);
+			listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
+		}
 		
 		// anyway, request the promos again
 		getPromos();
@@ -158,16 +157,18 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 		    			);
 			    		promos.add(promo);
 		    		}		    		
-		    				    		
-		    		if (listView.getAdapter() == null) {
-		    			listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
-		    		} else {
-		    			((PromotionsAdapter) listView.getAdapter()).notifyDataSetChanged();
+		    		
+		    		if (isAdded()) {		    				    	
+			    		if (listView.getAdapter() == null) {
+			    			listView.setAdapter(new PromotionsAdapter(getActivity(), promos));
+			    		} else {
+			    			((PromotionsAdapter) listView.getAdapter()).notifyDataSetChanged();
+			    		}
+			    		// Save the list in the Activity
+			    		callbacks.gotPromos(promos);
+			    		// cache the list
+			    		savePromos();
 		    		}
-		    		// Save the list in the Activity
-		    		callbacks.gotPromos(promos);
-		    		// cache the list
-		    		savePromos();
 		        }
 		    }
 		});
@@ -187,14 +188,10 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 
 	private void initAnimation() {
 		// animation
-		mSlideInLeft = AnimationUtils.loadAnimation(getActivity(),
-				R.anim.push_left_in);
-		mSlideOutRight = AnimationUtils.loadAnimation(getActivity(),
-				R.anim.push_right_out);
-		mSlideInRight = AnimationUtils.loadAnimation(getActivity(),
-				R.anim.push_right_in);
-		mSlideOutLeft = AnimationUtils.loadAnimation(getActivity(),
-				R.anim.push_left_out);
+		mSlideInLeft = AnimationUtils.loadAnimation(getActivity(), R.anim.push_left_in);
+		mSlideOutRight = AnimationUtils.loadAnimation(getActivity(), R.anim.push_right_out);
+		mSlideInRight = AnimationUtils.loadAnimation(getActivity(), R.anim.push_right_in);
+		mSlideOutLeft = AnimationUtils.loadAnimation(getActivity(), R.anim.push_left_out);
 	}
 
 	public void onItemClick(AdapterView<?> adp, View listview, int position, long id) {
@@ -202,8 +199,8 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 		showView(this._isBack);
 
 		if (adp != null && adp.getAdapter() instanceof PromotionsAdapter) {
-			PromotionsAdapter newsAdp = (PromotionsAdapter) adp.getAdapter();
-			Promo promo = newsAdp.getItem(position);
+			PromotionsAdapter adapter = (PromotionsAdapter) adp.getAdapter();
+			Promo promo = adapter.getItem(position);
 
 			tvTitle.setText(promo.title);
 			tvPrice.setText(promo.price);
@@ -212,10 +209,17 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 			UrlImageViewHelper.setUrlDrawable(img, promo.imageUrl);
 		}
 	}
+	
+	View.OnClickListener btnFavoriteListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// update the promo	
+		}
+	};
 
 	private void showView(boolean isBack) {
 		try {
-
 			if (isBack) {
 				this.vw_master.setVisibility(View.VISIBLE);
 				this.vw_detail.setVisibility(View.GONE);
@@ -227,9 +231,12 @@ public class PromotionsActivity extends Fragment implements OnItemClickListener,
 				this.vw_master.startAnimation(mSlideOutLeft);
 				this.vw_detail.startAnimation(mSlideInRight);
 			}
-
 		} catch (Exception e) {
-
+			// try again without animations
+			this.vw_master.setVisibility(View.VISIBLE);
+			this.vw_detail.setVisibility(View.GONE);
+			this.vw_master.setVisibility(View.GONE);
+			this.vw_detail.setVisibility(View.VISIBLE);
 		}
 	}
 

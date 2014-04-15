@@ -1,7 +1,5 @@
 package com.armandooj.promos.activities;
 
-import java.util.List;
-
 import com.armandooj.promos.R;
 import com.armandooj.promos.models.Promo;
 import com.armandooj.promos.utils.Utils;
@@ -15,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+
+import java.util.List;
 
 public class MainActivity extends FragmentActivity implements OnClickListener, PromotionsActivity.Callbacks {
 	
@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, P
 		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new MenuFragment()).commit();		
 		
 		ImageButton btnList = (ImageButton) findViewById(R.id.btn_list);
-		ImageButton btnCompose = (ImageButton) findViewById(R.id.btn_compose);
+		ImageButton btnCompose = (ImageButton) findViewById(R.id.btn_favorite);
 
 		btnList.setOnClickListener(this);
 		btnCompose.setOnClickListener(this);
@@ -83,8 +83,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener, P
 				menu.showMenu();
 			}
 		}
-		if (v.getId() == R.id.btn_compose) {
-			// TODO
+		if (v.getId() == R.id.btn_favorite) {
+			// TODO filter favorites
 		}
 	}
 	

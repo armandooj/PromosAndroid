@@ -60,14 +60,10 @@ public class MenuFragment extends Fragment implements OnItemClickListener {
 
 		lstMenuItems = new ArrayList<MenuItem>();
 
-		addMenuItem(R.string.perfil, R.drawable.ico_person,
-				Test.class, args);
-		addMenuItem(R.string.promociones, R.drawable.ico_star,
-				PromotionsActivity.class, args);
-		addMenuItem(R.string.actividad_reciente, R.drawable.ico_comment,
-				SwipeActivity.class, args);
-		addMenuItem(R.string.ayuda, R.drawable.ic_action_about,
-				Test.class, args);
+		addMenuItem(R.string.perfil, R.drawable.ico_person, ProfileActivity.class, args);
+		addMenuItem(R.string.promociones, R.drawable.ico_star, PromotionsActivity.class, args);
+		addMenuItem(R.string.actividad_reciente, R.drawable.ico_comment, SwipeActivity.class, args);
+		addMenuItem(R.string.ayuda, R.drawable.ic_action_about, Test.class, args);
 
 		// Assign the items to the list
 		listView.setAdapter(new MenuAdapter(getActivity(), lstMenuItems));

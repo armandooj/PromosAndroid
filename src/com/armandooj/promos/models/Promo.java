@@ -8,6 +8,7 @@ public class Promo {
 	public String price;
 	public String imageUrl;	
 	public int uses;
+	// public boolean isFavorite;
 
 	public Promo() {};
 
@@ -17,7 +18,7 @@ public class Promo {
 		this.description = desc;
 		this.price = price;		
 		this.imageUrl = imageUrl;
-		this.uses = uses;		
+		this.uses = uses;
 	};
 
 }
