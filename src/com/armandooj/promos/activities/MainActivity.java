@@ -5,7 +5,10 @@ import com.armandooj.promos.models.Promo;
 import com.armandooj.promos.utils.Utils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -35,7 +38,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener, P
 			
 			@Override
 			public void run() {
-				Parse.initialize(MainActivity.this, "xOYGA3pD0VgpO47tbQ3no1r6IOAyuHF7D0UgDbz4", "s2Vw5tYZSDnKCtWoZV471cjthYCtusDKw9N00iUn");		
+				Parse.initialize(MainActivity.this, "xOYGA3pD0VgpO47tbQ3no1r6IOAyuHF7D0UgDbz4", "s2Vw5tYZSDnKCtWoZV471cjthYCtusDKw9N00iUn");
+				ParseFacebookUtils.initialize("239292016251631");
 			}
 		}).start();        
 		
@@ -58,6 +62,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener, P
 				
 		ViewGroup vg = (ViewGroup)findViewById(R.id.main_root);
 		Utils.setFontAllView(vg);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
 	}
 	
 	public void createInitialFragment() {			

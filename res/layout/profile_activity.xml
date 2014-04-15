@@ -2,18 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="@dimen/dim_20" >
+    
+    <RelativeLayout
+		android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test" />
+        <com.armandooj.promos.custom_views.MLRoundedImageView
+            android:id="@+id/profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:src="@drawable/user_icon" />
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_image"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/gray_35"
+            android:textSize="@dimen/tex_size_xxlarge"
+            android:text="@string/anonimo" />
+        
+	</RelativeLayout>
+	    
+	<RelativeLayout
+	    android:id="@+id/login_container"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="30dp"
+	    android:orientation="horizontal" >
+
+	    <Button
+	        android:id="@+id/btn_login"
+	        style="@style/Button_Blue"
+	        android:layout_width="wrap_content"
+	        android:layout_height="@dimen/dim_50"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:padding="10dp"
+	        android:tag="bold"
+	        android:text="@string/login_facebook" />
+	
+	</RelativeLayout>
+	    
+	<LinearLayout
+	    android:id="@+id/user_container"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="30dp"
+	    android:orientation="horizontal" >
+
+		<TextView 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:text="User's info.."/>
+	    
+	</LinearLayout>
+	
+	<Button 
+	    android:id="@+id/btn_logout"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="logout"/>
 
 </LinearLayout>

@@ -9,6 +9,9 @@
     <string name="txt_some_longtext">Manny, Diego, and Sid embark upon another adventure after their continent is set adrift. Using an iceberg as a ship, they encounter sea creatures and battle pirates as they explore a new world.</string>
     <string name="txt_some_price">$60</string>
     
+    <!-- General -->
+    <string name="app_id">239292016251631</string>
+    
     <!-- Menu -->
     <string name="perfil">Mi perfil</string>
     <string name="promociones">Promociones</string>
@@ -18,5 +21,9 @@
     <!-- Promos -->
     <string name="cargando">Cargando</string>
     <string name="leer_mas">Leer más</string>
+    
+    <!-- Perfil -->
+    <string name="anonimo">Anónimo</string>
+    <string name="login_facebook">Entra con Facebook</string>
     
 </resources>
