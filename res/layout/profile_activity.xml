@@ -8,15 +8,16 @@
     <RelativeLayout
 		android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <com.armandooj.promos.custom_views.MLRoundedImageView
-            android:id="@+id/profile_image"
+        
+		<com.facebook.widget.ProfilePictureView
+			android:id="@+id/profile_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
-            android:src="@drawable/user_icon" />
+            android:layout_margin="20dp">
+		    
+		</com.facebook.widget.ProfilePictureView>
 
         <TextView
             android:id="@+id/name"

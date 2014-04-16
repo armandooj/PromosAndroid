@@ -11,6 +11,7 @@
     
     <!-- General -->
     <string name="app_id">239292016251631</string>
+    <string name="error">Algo salió mal. Por favor inténtalo más tarde.</string>
     
     <!-- Menu -->
     <string name="perfil">Mi perfil</string>
